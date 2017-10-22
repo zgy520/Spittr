@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.view.InternalResourceView;
 
 import spittr.Spittle;
+import spittr.data.SpitterRepository;
 import spittr.data.SpittleRepository;
 
 import org.junit.Test;
@@ -59,5 +60,14 @@ public class HomeControllerTest {
 			spittles.add(new Spittle("Spittles "+i, new Date()));
 		}
 		return spittles;
+	}
+	@Test
+	public void shouldShowRegistration() throws Exception{
+		SpitterRepository mockRepository = Mockito.mock(SpitterRepository.class);
+		SpitterController controller = new SpitterController(mockRepository);
+		MockMvc mockMvc = standaloneSetup(controller).build();
+		
+		mockMvc.perform(get("/spitter/register"))
+				.andExpect(view().name("registerForm"));
 	}
 }
